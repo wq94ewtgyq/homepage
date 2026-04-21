@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- ===== AI crawler opt-out & content protection ===== -->
+  <meta name="robots" content="index, follow, max-snippet:50, max-image-preview:standard">
+  <meta name="googlebot" content="index, follow">
+  <meta name="google" content="notranslate">
+  <!-- AI training opt-out signals -->
+  <meta name="Robots" content="noai, noimageai">
+  <meta name="AI-training" content="no">
+  <meta name="AI-data-use" content="no">
+  <!-- Legal -->
+  <meta name="copyright" content="© 2025 ROUTEBY. All rights reserved.">
+  <meta name="rights" content="No unauthorized scraping, crawling, or AI training data use.">
+  <meta name="author" content="ROUTEBY">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>브랜드 — ROUTE BY</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/logo-symbol.svg">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style-fx.css">
+  <!-- Splash screen — critical CSS (inline to prevent flash) -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: transparent;
+      overflow: hidden;
+      cursor: pointer;
+      transition: opacity 0.4s ease-out 0.9s;
+    }
+    /* Single full-screen curtain — slides UP only */
+    .splash__curtain {
+      position: absolute;
+      inset: 0;
+      background: #242424;
+      z-index: 1;
+      transition: transform 1.2s cubic-bezier(.76, 0, .24, 1);
+    }
+    /* Stage (content layer) */
+    .splash__stage {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .splash__gif {
+      width: min(460px, 55vw);
+      height: auto;
+      max-width: 460px;
+      user-select: none;
+      -webkit-user-drag: none;
+      transform-origin: 50% 50%;
+      transition:
+        transform 1.2s cubic-bezier(.76, 0, .24, 1),
+        opacity 0.35s ease-out 0.85s;
+      will-change: transform, opacity;
+    }
+    .splash__skip {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: -apple-system, "Pretendard", sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      background: transparent;
+      transition: all .3s;
+      opacity: 0;
+      animation: splash-skip-fade 0.6s ease-out 1.8s forwards;
+      cursor: pointer;
+    }
+    .splash__skip:hover { color: #E81E1E; border-color: #E81E1E; }
+    @keyframes splash-skip-fade { to { opacity: 1; } }
+
+    /* Phase: closing — curtain lifts UP, GIF shrinks+moves (JS sets transform), then fades */
+    .splash--closing .splash__curtain { transform: translateY(-100%); }
+    .splash--closing .splash__gif     { opacity: 0; }
+    .splash--closing .splash__skip    { opacity: 0; pointer-events: none; }
+    /* Phase: done — fade whole splash */
+    .splash--done { opacity: 0; pointer-events: none; }
+    body.splash-lock { overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) {
+      .splash { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- First-visit splash screen -->
+  <link rel="preload" as="image" href="../assets/img/splash-last.png">
+  <div class="splash" data-splash aria-hidden="true">
+    <!-- Single full-screen curtain (lifts UP) -->
+    <div class="splash__curtain"></div>
+    <!-- Stage layer (GIF element, src swaps to static PNG on freeze) -->
+    <div class="splash__stage">
+      <img src="../assets/img/splash.gif" alt="" class="splash__gif" data-splash-gif data-splash-frozen-src="../assets/img/splash-last.png">
+    </div>
+    <button class="splash__skip" data-splash-skip type="button" aria-label="Skip intro">SKIP INTRO</button>
+  </div>
+
+  <header class="nav is-dark">
+    <div class="container nav__inner">
+      <a href="../index.html" class="brand">
+        <img src="../assets/img/logo-horizontal.svg" alt="ROUTE BY" class="brand__logo brand__logo--light">
+        <img src="../assets/img/logo-horizontal-dark.svg" alt="ROUTE BY" class="brand__logo brand__logo--dark">
+      </a>
+      <nav class="nav__menu">
+        <a href="about.html" class="nav__link" data-i18n="nav.about">회사소개</a>
+        <a href="business.html" class="nav__link" data-i18n="nav.business">사업영역</a>
+        <a href="brands.html" class="nav__link is-active" data-i18n="nav.brands">브랜드</a>
+        <a href="contact.html" class="nav__link" data-i18n="nav.contact">컨택트</a>
+      </nav>
+
+      <div class="nav__actions">
+        <div class="lang-select" data-lang-select>
+          <button class="lang-select__trigger" data-lang-trigger type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select language">
+            <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="krc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#krc)"><rect width="24" height="24" fill="#fff"/><g transform="translate(12 12) rotate(-33)"><path d="M-5 0 A 5 5 0 0 1 5 0 A 2.5 2.5 0 0 0 0 0 A 2.5 2.5 0 0 1 -5 0 Z" fill="#cd2e3a"/><path d="M-5 0 A 5 5 0 0 0 5 0 A 2.5 2.5 0 0 1 0 0 A 2.5 2.5 0 0 0 -5 0 Z" fill="#0047a0"/></g></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+            <span class="lang-code">KR</span>
+            <svg class="lang-select__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <ul class="lang-select__menu" data-lang-menu role="listbox">
+            <li><button class="lang-select__option is-active" data-lang="ko" role="option" type="button">
+              <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="krc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#krc)"><rect width="24" height="24" fill="#fff"/><g transform="translate(12 12) rotate(-33)"><path d="M-5 0 A 5 5 0 0 1 5 0 A 2.5 2.5 0 0 0 0 0 A 2.5 2.5 0 0 1 -5 0 Z" fill="#cd2e3a"/><path d="M-5 0 A 5 5 0 0 0 5 0 A 2.5 2.5 0 0 1 0 0 A 2.5 2.5 0 0 0 -5 0 Z" fill="#0047a0"/></g></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+              <span class="lang-code">KR</span>
+              <span class="lang-name">한국어</span>
+            </button></li>
+            <li><button class="lang-select__option" data-lang="en" role="option" type="button">
+              <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="usc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#usc)"><rect width="24" height="24" fill="#b22234"/><rect y="2" width="24" height="2" fill="#fff"/><rect y="6" width="24" height="2" fill="#fff"/><rect y="10" width="24" height="2" fill="#fff"/><rect y="14" width="24" height="2" fill="#fff"/><rect y="18" width="24" height="2" fill="#fff"/><rect y="22" width="24" height="2" fill="#fff"/><rect width="11" height="13" fill="#3c3b6e"/></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+              <span class="lang-code">US</span>
+              <span class="lang-name">English</span>
+            </button></li>
+            <li><button class="lang-select__option" data-lang="zh" role="option" type="button">
+              <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="cnc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#cnc)"><rect width="24" height="24" fill="#de2910"/><text x="7" y="11" font-family="Arial,sans-serif" font-size="7" fill="#ffde00" text-anchor="middle">★</text><text x="12" y="6.5" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text><text x="14" y="9" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text><text x="14" y="12.5" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text><text x="12" y="15" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+              <span class="lang-code">CN</span>
+              <span class="lang-name">中文</span>
+            </button></li>
+          </ul>
+        </div>
+        <button class="menu-toggle"><span></span><span></span><span></span></button>
+
+      </div>
+    </div>
+  </header>
+
+  <section class="page-header" data-nav-dark data-bg="BRANDS">
+    <div class="container page-header__inner">
+      <span class="eyebrow">PARTNERS</span>
+      <h1 class="page-header__title" data-i18n="brands.page.title">Brands</h1>
+      <p class="page-header__lead" data-i18n="brands.page.lead">
+        공식 파트너십을 기반으로, 국내외 신뢰받는 브랜드들의 상품을 B2B 채널에 안정적으로 공급합니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__meta">
+          <span class="eyebrow">PARTNER BRANDS</span>
+        </div>
+        <div>
+          <h2 class="section-title">공식 파트너 <em>브랜드</em></h2>
+          <p class="section-header__text" style="margin-top: 20px;">
+            각 카테고리 최고의 브랜드들과 함께, 루트바이는 신뢰를 유통합니다.
+          </p>
+        </div>
+      </div>
+
+      <!-- Featured brands detailed -->
+      <div class="grid-2-col featured-partners reveal">
+        <article class="featured-card featured-card--ink">
+          <div class="featured-card__logo" data-brand-logo>
+            <!-- 실제 로고 교체: <img src="../assets/img/brands/풀무원건강생활.svg" alt="풀무원건강생활"> -->
+            <span class="featured-card__logo-placeholder">LOGO</span>
+          </div>
+          <span class="featured-card__eyebrow">HEALTH · WELLNESS</span>
+          <h3 class="featured-card__name">풀무원건강생활</h3>
+          <p class="featured-card__desc">자연 건강식품의 대표 브랜드. 프리미엄 건강기능식품 라인업을 B2B 채널에 제공합니다.</p>
+          <div class="featured-card__badge">OFFICIAL PARTNER ✦</div>
+        </article>
+        <article class="featured-card featured-card--red">
+          <div class="featured-card__logo" data-brand-logo>
+            <!-- 실제 로고 교체: <img src="../assets/img/brands/정관장.svg" alt="정관장"> -->
+            <span class="featured-card__logo-placeholder">LOGO</span>
+          </div>
+          <span class="featured-card__eyebrow">KGC · HEALTH</span>
+          <h3 class="featured-card__name">정관장</h3>
+          <p class="featured-card__desc">대한민국 홍삼의 대명사. 6년근 홍삼 원료로 만든 프리미엄 건강식품.</p>
+          <div class="featured-card__badge">OFFICIAL PARTNER ✦</div>
+        </article>
+      </div>
+
+      <!-- Brand grid -->
+      <div class="brands-grid reveal" data-delay="1">
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="코닥 캐리어"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">코닥 캐리어</div>
+              <span class="brand-cell__tag">KODAK · TRAVEL</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="신일전자"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">신일전자</div>
+              <span class="brand-cell__tag">SHINIL · APPLIANCE</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="광동"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">광동</div>
+              <span class="brand-cell__tag">KWANGDONG · HEALTH</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="바겐슈타이거"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">바겐슈타이거</div>
+              <span class="brand-cell__tag">BAUGENSTEIGER · LIFE</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="지리산마천농협"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">지리산마천농협</div>
+              <span class="brand-cell__tag">JIRISAN · FOOD</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="풀무원건강생활"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">풀무원건강생활</div>
+              <span class="brand-cell__tag">PULMUONE · HEALTH</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__logo" data-brand-logo>
+              <!-- 실제 로고 교체 시: <img src="../assets/img/brands/XXX.svg" alt="정관장"> -->
+              <span class="brand-cell__placeholder">LOGO</span>
+            </div>
+            <div class="brand-cell__text">
+              <div class="brand-cell__name">정관장</div>
+              <span class="brand-cell__tag">KGC · HEALTH</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-cell brand-cell--more">
+          <div class="brand-cell__inner">
+            <div class="brand-cell__name">+ more</div>
+            <span class="brand-cell__tag">COMING SOON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why RouteBy for brands? -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__meta"><span class="eyebrow">FOR BRANDS</span></div>
+        <div>
+          <h2 class="section-title" style="color: var(--white);">왜 <em>루트바이</em>와<br>파트너십을 맺는가</h2>
+        </div>
+      </div>
+
+      <div class="grid-3-col">
+        <article class="why-card reveal">
+          <div class="why-card__num">/ 01</div>
+          <h3 class="why-card__title">B2B 채널 확장</h3>
+          <p class="why-card__desc">기업 특판, 임직원몰, 복지몰 등 브랜드가 직접 접근하기 어려운 채널로 유통망을 넓힙니다.</p>
+        </article>
+        <article class="why-card reveal" data-delay="1">
+          <div class="why-card__num">/ 02</div>
+          <h3 class="why-card__title">ERP 기반 정산</h3>
+          <p class="why-card__desc">루비즈 ERP를 통해 주문부터 정산까지 자동화된 투명한 거래를 보장합니다.</p>
+        </article>
+        <article class="why-card reveal" data-delay="2">
+          <div class="why-card__num">/ 03</div>
+          <h3 class="why-card__title">품격 있는 큐레이션</h3>
+          <p class="why-card__desc">단순 유통을 넘어 브랜드 스토리를 함께 전달하는 큐레이션 카달로그.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="cta-block">
+    <div class="container cta-block__inner">
+      <h2 class="cta-block__title reveal">
+        브랜드 파트너십,<br><em>지금 시작하세요</em>
+      </h2>
+      <p class="cta-block__lead reveal" data-delay="1">
+        귀사의 브랜드 스토리와 루트바이의 B2B 네트워크가 만나면, 새로운 매출 경로가 열립니다.
+      </p>
+      <div class="reveal" data-delay="2">
+        <a href="contact.html" class="btn btn--primary">
+          <span>브랜드 파트너 제안</span>
+          <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- ====================================================== -->
+  <!-- FOOTER — clean / utilitarian                           -->
+  <!-- ====================================================== -->
+  <footer class="footer">
+    <div class="container">
+
+      <!-- Top utility links -->
+      <nav class="footer__top-nav">
+        <a href="about.html" data-i18n="nav.about">회사소개</a>
+        <a href="business.html" data-i18n="nav.business">사업영역</a>
+        <a href="brands.html" data-i18n="nav.brands">브랜드</a>
+        <a href="contact.html" data-i18n="nav.contact">컨택트</a>
+        <a href="#" class="footer__top-nav-alt">개인정보처리방침</a>
+        <a href="#" class="footer__top-nav-alt">이용약관</a>
+        <a href="#" class="footer__top-nav-alt footer__top-nav-alt--em">이메일 무단수집거부</a>
+      </nav>
+
+      <!-- Legal credentials + brand logo (right) -->
+
+      <div class="footer__legal-row">
+
+        <div class="footer__legal">
+        <p class="footer__legal-line">
+          대표이사 : <strong>김서늬</strong>  ·  사업자등록번호 : <strong>446-04-03574</strong>  ·  통신판매업 신고번호 : <strong>제 2025-경기구리-0235 호</strong>  ·  건강기능식품 영업신고 : <strong>제 2025-0500117 호</strong>
+        </p>
+        <p class="footer__legal-line">
+          주소 : 경기도 구리시 갈매순환로204번길 43-5, 1층
+        </p>
+      </div>
+        <div class="footer__legal-logo">
+          <img src="../assets/img/logo-horizontal-darkbg.svg" alt="ROUTE BY" class="footer__legal-logo-img">
+        </div>
+      </div>
+
+      <!-- Content protection notice (inline prose) -->
+      <div class="footer__notice">
+        <p data-i18n="footer.notice">
+          <strong>루트바이</strong>의 사전 승낙 없이 모든 정보를 <strong>복제, 전송, 출판, 배포</strong> 등 무단 이용할 수 없습니다.
+        </p>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer__copyright" data-i18n="footer.copyright">
+        Copyright © 2025 ROUTEBY. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll-to-top button -->
+  <button class="scroll-top" data-scroll-top aria-label="맨 위로" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/fx.js"></script>
+</body>
+</html>

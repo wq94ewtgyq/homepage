@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- ===== AI crawler opt-out & content protection ===== -->
+  <meta name="robots" content="index, follow, max-snippet:50, max-image-preview:standard">
+  <meta name="googlebot" content="index, follow">
+  <meta name="google" content="notranslate">
+  <!-- AI training opt-out signals -->
+  <meta name="Robots" content="noai, noimageai">
+  <meta name="AI-training" content="no">
+  <meta name="AI-data-use" content="no">
+  <!-- Legal -->
+  <meta name="copyright" content="© 2025 ROUTEBY. All rights reserved.">
+  <meta name="rights" content="No unauthorized scraping, crawling, or AI training data use.">
+  <meta name="author" content="ROUTEBY">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회사소개 — ROUTE BY</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/logo-symbol.svg">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style-fx.css">
+  <!-- Splash screen — critical CSS (inline to prevent flash) -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: transparent;
+      overflow: hidden;
+      cursor: pointer;
+      transition: opacity 0.4s ease-out 0.9s;
+    }
+    /* Single full-screen curtain — slides UP only */
+    .splash__curtain {
+      position: absolute;
+      inset: 0;
+      background: #242424;
+      z-index: 1;
+      transition: transform 1.2s cubic-bezier(.76, 0, .24, 1);
+    }
+    /* Stage (content layer) */
+    .splash__stage {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .splash__gif {
+      width: min(460px, 55vw);
+      height: auto;
+      max-width: 460px;
+      user-select: none;
+      -webkit-user-drag: none;
+      transform-origin: 50% 50%;
+      transition:
+        transform 1.2s cubic-bezier(.76, 0, .24, 1),
+        opacity 0.35s ease-out 0.85s;
+      will-change: transform, opacity;
+    }
+    .splash__skip {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: -apple-system, "Pretendard", sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      background: transparent;
+      transition: all .3s;
+      opacity: 0;
+      animation: splash-skip-fade 0.6s ease-out 1.8s forwards;
+      cursor: pointer;
+    }
+    .splash__skip:hover { color: #E81E1E; border-color: #E81E1E; }
+    @keyframes splash-skip-fade { to { opacity: 1; } }
+
+    /* Phase: closing — curtain lifts UP, GIF shrinks+moves (JS sets transform), then fades */
+    .splash--closing .splash__curtain { transform: translateY(-100%); }
+    .splash--closing .splash__gif     { opacity: 0; }
+    .splash--closing .splash__skip    { opacity: 0; pointer-events: none; }
+    /* Phase: done — fade whole splash */
+    .splash--done { opacity: 0; pointer-events: none; }
+    body.splash-lock { overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) {
+      .splash { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- First-visit splash screen -->
+  <link rel="preload" as="image" href="../assets/img/splash-last.png">
+  <div class="splash" data-splash aria-hidden="true">
+    <!-- Single full-screen curtain (lifts UP) -->
+    <div class="splash__curtain"></div>
+    <!-- Stage layer (GIF element, src swaps to static PNG on freeze) -->
+    <div class="splash__stage">
+      <img src="../assets/img/splash.gif" alt="" class="splash__gif" data-splash-gif data-splash-frozen-src="../assets/img/splash-last.png">
+    </div>
+    <button class="splash__skip" data-splash-skip type="button" aria-label="Skip intro">SKIP INTRO</button>
+  </div>
+
+
+<header class="nav is-dark">
+    <div class="container nav__inner">
+      <a href="../index.html" class="brand">
+        <img src="../assets/img/logo-horizontal.svg" alt="ROUTE BY" class="brand__logo brand__logo--light">
+        <img src="../assets/img/logo-horizontal-dark.svg" alt="ROUTE BY" class="brand__logo brand__logo--dark">
+      </a>
+      <nav class="nav__menu">
+        <a href="about.html" class="nav__link is-active" data-i18n="nav.about">회사소개</a>
+        <a href="business.html" class="nav__link" data-i18n="nav.business">사업영역</a>
+        <a href="brands.html" class="nav__link" data-i18n="nav.brands">브랜드</a>
+        <a href="contact.html" class="nav__link" data-i18n="nav.contact">컨택트</a>
+      </nav>
+
+      <div class="nav__actions">
+        <div class="lang-select" data-lang-select>
+          <button class="lang-select__trigger" data-lang-trigger type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select language">
+            <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="krc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#krc)"><rect width="24" height="24" fill="#fff"/><g transform="translate(12 12) rotate(-33)"><path d="M-5 0 A 5 5 0 0 1 5 0 A 2.5 2.5 0 0 0 0 0 A 2.5 2.5 0 0 1 -5 0 Z" fill="#cd2e3a"/><path d="M-5 0 A 5 5 0 0 0 5 0 A 2.5 2.5 0 0 1 0 0 A 2.5 2.5 0 0 0 -5 0 Z" fill="#0047a0"/></g></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+            <span class="lang-code">KR</span>
+            <svg class="lang-select__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <ul class="lang-select__menu" data-lang-menu role="listbox">
+            <li><button class="lang-select__option is-active" data-lang="ko" role="option" type="button">
+              <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="krc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#krc)"><rect width="24" height="24" fill="#fff"/><g transform="translate(12 12) rotate(-33)"><path d="M-5 0 A 5 5 0 0 1 5 0 A 2.5 2.5 0 0 0 0 0 A 2.5 2.5 0 0 1 -5 0 Z" fill="#cd2e3a"/><path d="M-5 0 A 5 5 0 0 0 5 0 A 2.5 2.5 0 0 1 0 0 A 2.5 2.5 0 0 0 -5 0 Z" fill="#0047a0"/></g></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+              <span class="lang-code">KR</span>
+              <span class="lang-name">한국어</span>
+            </button></li>
+            <li><button class="lang-select__option" data-lang="en" role="option" type="button">
+              <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="usc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#usc)"><rect width="24" height="24" fill="#b22234"/><rect y="2" width="24" height="2" fill="#fff"/><rect y="6" width="24" height="2" fill="#fff"/><rect y="10" width="24" height="2" fill="#fff"/><rect y="14" width="24" height="2" fill="#fff"/><rect y="18" width="24" height="2" fill="#fff"/><rect y="22" width="24" height="2" fill="#fff"/><rect width="11" height="13" fill="#3c3b6e"/></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+              <span class="lang-code">US</span>
+              <span class="lang-name">English</span>
+            </button></li>
+            <li><button class="lang-select__option" data-lang="zh" role="option" type="button">
+              <svg class="lang-flag" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="cnc"><circle cx="12" cy="12" r="12"/></clipPath></defs><g clip-path="url(#cnc)"><rect width="24" height="24" fill="#de2910"/><text x="7" y="11" font-family="Arial,sans-serif" font-size="7" fill="#ffde00" text-anchor="middle">★</text><text x="12" y="6.5" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text><text x="14" y="9" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text><text x="14" y="12.5" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text><text x="12" y="15" font-family="Arial,sans-serif" font-size="3" fill="#ffde00" text-anchor="middle">★</text></g><circle cx="12" cy="12" r="11.5" fill="none" stroke="rgba(0,0,0,0.1)"/></svg>
+              <span class="lang-code">CN</span>
+              <span class="lang-name">中文</span>
+            </button></li>
+          </ul>
+        </div>
+        <button class="menu-toggle"><span></span><span></span><span></span></button>
+
+      </div>
+    </div>
+  </header>
+
+  <section class="page-header" data-nav-dark data-bg="ABOUT">
+    <div class="container page-header__inner">
+      <span class="eyebrow" data-i18n="about.page.eyebrow">COMPANY</span>
+      <h1 class="page-header__title" data-i18n="about.page.title">About ROUTE BY</h1>
+      <p class="page-header__lead" data-i18n="about.page.lead">복잡한 B2B 유통의 구조를 단순하게, 그리고 신뢰할 수 있게. 루트바이는 공급과 수요 사이에서 가장 효율적인 경로를 설계합니다.</p>
+    </div>
+  </section>
+
+  <!-- LOGO PHILOSOPHY -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__meta"><span class="eyebrow">IDENTITY</span></div>
+        <div>
+          <h2 class="section-title" style="color: var(--white);">로고에 담긴 <em>철학</em></h2>
+          <p class="section-header__tagline">심벌마크 : <strong>신뢰의 연결선</strong></p>
+        </div>
+      </div>
+      <div class="logo-philosophy">
+        <div class="logo-philosophy__visual reveal">
+          <div class="symbol-stage">
+            <svg class="symbol-stage__waves" viewBox="0 0 400 400" aria-hidden="true">
+              <circle cx="200" cy="200" r="90" class="symbol-stage__ring symbol-stage__ring--1"/>
+              <circle cx="200" cy="200" r="90" class="symbol-stage__ring symbol-stage__ring--2"/>
+              <circle cx="200" cy="200" r="90" class="symbol-stage__ring symbol-stage__ring--3"/>
+            </svg>
+            <svg class="symbol-stage__network" viewBox="0 0 400 400" aria-hidden="true">
+              <g class="symbol-stage__lines">
+                <line x1="200" y1="200" x2="60"  y2="80"/>
+                <line x1="200" y1="200" x2="340" y2="80"/>
+                <line x1="200" y1="200" x2="40"  y2="240"/>
+                <line x1="200" y1="200" x2="360" y2="240"/>
+                <line x1="200" y1="200" x2="120" y2="350"/>
+                <line x1="200" y1="200" x2="280" y2="350"/>
+              </g>
+              <g class="symbol-stage__nodes">
+                <circle cx="60"  cy="80"  r="4" class="node node--a"/>
+                <circle cx="340" cy="80"  r="4" class="node node--b"/>
+                <circle cx="40"  cy="240" r="4" class="node node--c"/>
+                <circle cx="360" cy="240" r="4" class="node node--d"/>
+                <circle cx="120" cy="350" r="4" class="node node--e"/>
+                <circle cx="280" cy="350" r="4" class="node node--f"/>
+              </g>
+              <g class="symbol-stage__orbit">
+                <circle cx="200" cy="80" r="3" class="orbit-dot"/>
+              </g>
+              <g class="symbol-stage__orbit symbol-stage__orbit--reverse">
+                <circle cx="200" cy="60" r="2.5" class="orbit-dot orbit-dot--small"/>
+              </g>
+            </svg>
+            <img class="symbol-stage__mark" src="../assets/img/logo-symbol-only.svg" alt="ROUTE BY 심벌마크">
+          </div>
+        </div>
+        <div class="logo-philosophy__text reveal" data-delay="1">
+          <p><strong>'R'을 단절 없는 한 획의 리본으로 구현</strong>하여, 비즈니스의 모든 과정이 유연하게 연결되어 있음을 상징합니다.</p>
+          <p>상단의 <em>각진 스트로크</em>는 목표를 향해 흔들림 없이 나아가는 분명한 방향성(ROUTE)을 이정표처럼 제시하며, 하단의 <em>루프</em>는 모든 성장의 근간이 되는 <em>단단한 신뢰의 뿌리(ROOT)</em>를 의미합니다.</p>
+          <p>상징색 <span class="hex">#E81E1E</span>은 고객을 향한 따뜻한 환대와 멈추지 않는 도전의 에너지를 담고 있습니다. 끊김 없이 이어지는 선의 궤적은 업무의 효율성과 기업의 지속 가능성을 상징하며, <strong>루트바이</strong>의 철학을 시각적 언어로 응축하고 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO GUIDE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__meta"><span class="eyebrow">LOGO GUIDE</span></div>
+        <div>
+          <h2 class="section-title">로고 <em>사용 가이드</em></h2>
+          <p class="section-header__text" style="margin-top: 20px;">배경 조건과 용도에 따라 변형을 제공합니다. 임의 변형·재배치는 지양해주세요.</p>
+        </div>
+      </div>
+      <div class="logo-guide">
+        <div class="logo-guide__group">
+          <div class="logo-guide__group-head">
+            <span class="logo-guide__group-num">A</span>
+            <h3 class="logo-guide__group-title">가로형 / HORIZONTAL</h3>
+            <span class="logo-guide__group-hint">일반 사용</span>
+          </div>
+          <div class="logo-guide__variants">
+            <figure class="logo-guide__card">
+              <div class="logo-guide__preview"><img src="../assets/img/logo-horizontal.svg" alt="기본 가로"></div>
+              <figcaption class="logo-guide__caption">기본형 · Main</figcaption>
+            </figure>
+            <figure class="logo-guide__card">
+              <div class="logo-guide__preview"><img src="../assets/img/logo-horizontal-black.svg" alt="블랙 가로"></div>
+              <figcaption class="logo-guide__caption">블랙 · Black</figcaption>
+            </figure>
+            <figure class="logo-guide__card logo-guide__card--dark">
+              <div class="logo-guide__preview logo-guide__preview--dark"><img src="../assets/img/logo-horizontal-dark.svg" alt="다크 가로"></div>
+              <figcaption class="logo-guide__caption">다크 · On Dark</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="logo-guide__group">
+          <div class="logo-guide__group-head">
+            <span class="logo-guide__group-num">B</span>
+            <h3 class="logo-guide__group-title">세로형 / VERTICAL</h3>
+            <span class="logo-guide__group-hint">좁은 영역</span>
+          </div>
+          <div class="logo-guide__variants">
+            <figure class="logo-guide__card">
+              <div class="logo-guide__preview"><img src="../assets/img/logo-vertical.svg" alt="기본 세로"></div>
+              <figcaption class="logo-guide__caption">기본형 · Main</figcaption>
+            </figure>
+            <figure class="logo-guide__card">
+              <div class="logo-guide__preview"><img src="../assets/img/logo-vertical-black.svg" alt="블랙 세로"></div>
+              <figcaption class="logo-guide__caption">블랙 · Black</figcaption>
+            </figure>
+            <figure class="logo-guide__card logo-guide__card--dark">
+              <div class="logo-guide__preview logo-guide__preview--dark"><img src="../assets/img/logo-vertical-dark.svg" alt="다크 세로"></div>
+              <figcaption class="logo-guide__caption">다크 · On Dark</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- Color palette -->
+      <div class="color-palette reveal" data-delay="1">
+        <div class="color-palette__head">
+          <span class="eyebrow">COLOR PALETTE</span>
+          <h3>브랜드 컬러</h3>
+        </div>
+        <div class="color-palette__grid">
+          <div class="color-chip">
+            <div class="color-chip__swatch" style="background: #E81E1E;"></div>
+            <div class="color-chip__info">
+              <div class="color-chip__role">MAIN COLOR</div>
+              <div class="color-chip__name">Signal Red</div>
+              <dl class="color-chip__values">
+                <div><dt>HEX</dt><dd>#E81E1E</dd></div>
+                <div><dt>RGB</dt><dd>232 · 30 · 30</dd></div>
+              </dl>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-chip__swatch" style="background: #242424;"></div>
+            <div class="color-chip__info">
+              <div class="color-chip__role">TYPO COLOR</div>
+              <div class="color-chip__name">Ink Black</div>
+              <dl class="color-chip__values">
+                <div><dt>HEX</dt><dd>#242424</dd></div>
+                <div><dt>RGB</dt><dd>36 · 36 · 36</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="section section--cream" id="history">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__meta"><span class="eyebrow">HISTORY</span></div>
+        <div>
+          <h2 class="section-title">루트바이의 <em>궤적</em></h2>
+        </div>
+      </div>
+
+      <div class="history-v3">
+        <div class="history-v3__content">
+
+        <!-- ═════ 2026 ═════ -->
+        <section class="history-v3__year" data-year-block>
+          <aside class="history-v3__anchor">
+            <div class="history-v3__year-num">2026</div>
+            <div class="history-v3__year-tag">Scaling Year</div>
+            <div class="history-v3__year-count">02 events</div>
+          </aside>
+
+          <ol class="history-v3__list">
+
+            <li class="history-v3__row history-v3__row--highlight history-v3__row--latest reveal">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">05</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">루비즈 ERP 자체 개발</h3>
+                </div>
+                <p class="history-v3__desc">주문·정산·배송 통합 자체 ERP 런칭.</p>
+              </div>
+            </li>
+
+            <li class="history-v3__row reveal" data-delay="1">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">04</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">수입식품판매업 영업등록</h3>
+                </div>
+                <p class="history-v3__desc">해외 브랜드 유통 기반 정식 등록.</p>
+              </div>
+            </li>
+
+          </ol>
+        </section>
+
+        <!-- ═════ 2025 ═════ -->
+        <section class="history-v3__year" data-year-block>
+          <aside class="history-v3__anchor">
+            <div class="history-v3__year-num">2025</div>
+            <div class="history-v3__year-tag">Founding Year</div>
+            <div class="history-v3__year-count">06 events</div>
+          </aside>
+
+          <ol class="history-v3__list">
+
+            <li class="history-v3__row reveal">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">09</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">온누리 상품권 가맹점 지정</h3>
+                </div>
+                <p class="history-v3__desc">전통시장 판매 채널 확보.</p>
+              </div>
+            </li>
+
+            <li class="history-v3__row history-v3__row--highlight reveal" data-delay="1">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">08</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">B2B 카달로그 사업 개시</h3>
+                </div>
+                <p class="history-v3__desc">핵심 사업 개시 · 기업 특판 본격화.</p>
+              </div>
+            </li>
+
+            <li class="history-v3__row history-v3__row--highlight reveal" data-delay="2">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">05</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">여성기업 지정</h3>
+                </div>
+                <p class="history-v3__desc">중소벤처기업부 — 여성기업 확인서 취득.</p>
+              </div>
+            </li>
+
+            <li class="history-v3__row reveal">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">05</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">오프라인 무인화</h3>
+                </div>
+                <p class="history-v3__desc">무인 운영 시스템 전환.</p>
+              </div>
+            </li>
+
+            <li class="history-v3__row reveal" data-delay="1">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">03</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">건강기능식품 영업신고</h3>
+                </div>
+                <p class="history-v3__desc">건강기능식품 일반판매업 신고 (제2025-0500117호).</p>
+              </div>
+            </li>
+
+            <li class="history-v3__row history-v3__row--highlight history-v3__row--origin reveal" data-delay="2">
+              <div class="history-v3__month">
+                <span class="history-v3__month-num">03</span>
+                <span class="history-v3__month-dot"></span>
+              </div>
+              <div class="history-v3__body">
+                <div class="history-v3__head">
+                  <h3 class="history-v3__title">회사 설립 &amp; 오프라인 매장 오픈</h3>
+                </div>
+                <p class="history-v3__desc">경기도 구리시 갈매동 · 여정의 시작.</p>
+              </div>
+            </li>
+
+          </ol>
+        </section>        </div>
+        <!-- Right-side: growing-root timeline visualization -->
+        <aside class="history-tree" aria-hidden="true" data-history-tree>
+          <div class="history-tree__head">
+            <span class="history-tree__eyebrow">GROWING · SINCE 2025-03</span>
+            <h4 class="history-tree__title">단단한 뿌리,<br><em>자라나는 길</em></h4>
+          </div>
+
+          <div class="history-tree__stage">
+            <svg class="history-tree__svg" viewBox="0 0 260 520" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="trunkGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"  stop-color="#e81e1e" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="#e81e1e" stop-opacity="0.35"/>
+                </linearGradient>
+                <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#e81e1e" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="#e81e1e" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Ground line (2025 start) -->
+              <line x1="40" y1="470" x2="220" y2="470" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="2 4"/>
+              <text x="130" y="495" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="Pretendard, sans-serif" font-size="9" letter-spacing="0.2em">— ROOT · 2025-03 —</text>
+
+              <!-- Main trunk growing upward -->
+              <path class="tree-trunk" d="M130,470 L130,70"
+                    stroke="url(#trunkGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+              <!-- Branches (one per milestone, chronological from bottom to top) -->
+              <!-- 2025-03 설립 (right) -->
+              <g class="tree-branch" data-i="0">
+                <path d="M130,450 L170,440" stroke="#e81e1e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <circle cx="170" cy="440" r="4" fill="#e81e1e"/>
+                <text x="178" y="443" fill="rgba(255,255,255,0.85)" font-family="Pretendard, sans-serif" font-size="9" font-weight="600">03 · 설립</text>
+              </g>
+              <!-- 2025-03 건강기능식품 (left) -->
+              <g class="tree-branch" data-i="1">
+                <path d="M130,420 L90,410" stroke="#e81e1e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <circle cx="90" cy="410" r="3.5" fill="#e81e1e" opacity="0.8"/>
+                <text x="82" y="413" text-anchor="end" fill="rgba(255,255,255,0.7)" font-family="Pretendard, sans-serif" font-size="9" font-weight="500">건강기능식품</text>
+              </g>
+              <!-- 2025-05 여성기업 (right) HIGHLIGHT -->
+              <g class="tree-branch tree-branch--major" data-i="2">
+                <path d="M130,370 L180,355" stroke="#e81e1e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <circle cx="180" cy="355" r="9" fill="url(#nodeGlow)"/>
+                <circle cx="180" cy="355" r="5" fill="#e81e1e"/>
+                <circle cx="180" cy="355" r="2" fill="#fff"/>
+                <text x="190" y="358" fill="#fff" font-family="Pretendard, sans-serif" font-size="10" font-weight="700">05 · 여성기업</text>
+              </g>
+              <!-- 2025-05 무인화 (left) -->
+              <g class="tree-branch" data-i="3">
+                <path d="M130,340 L85,328" stroke="#e81e1e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <circle cx="85" cy="328" r="3.5" fill="#e81e1e" opacity="0.8"/>
+                <text x="77" y="331" text-anchor="end" fill="rgba(255,255,255,0.7)" font-family="Pretendard, sans-serif" font-size="9" font-weight="500">무인화</text>
+              </g>
+              <!-- 2025-08 B2B 카달로그 (right) HIGHLIGHT -->
+              <g class="tree-branch tree-branch--major" data-i="4">
+                <path d="M130,280 L185,260" stroke="#e81e1e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <circle cx="185" cy="260" r="9" fill="url(#nodeGlow)"/>
+                <circle cx="185" cy="260" r="5" fill="#e81e1e"/>
+                <circle cx="185" cy="260" r="2" fill="#fff"/>
+                <text x="195" y="263" fill="#fff" font-family="Pretendard, sans-serif" font-size="10" font-weight="700">08 · B2B 카달로그</text>
+              </g>
+              <!-- 2025-09 온누리 (left) -->
+              <g class="tree-branch" data-i="5">
+                <path d="M130,230 L88,215" stroke="#e81e1e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <circle cx="88" cy="215" r="3.5" fill="#e81e1e" opacity="0.8"/>
+                <text x="80" y="218" text-anchor="end" fill="rgba(255,255,255,0.7)" font-family="Pretendard, sans-serif" font-size="9" font-weight="500">온누리 가맹</text>
+              </g>
+              <!-- 2026-04 수입식품 (right) -->
+              <g class="tree-branch" data-i="6">
+                <path d="M130,170 L175,155" stroke="#e81e1e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <circle cx="175" cy="155" r="3.5" fill="#e81e1e" opacity="0.9"/>
+                <text x="183" y="158" fill="rgba(255,255,255,0.8)" font-family="Pretendard, sans-serif" font-size="9" font-weight="500">04 · 수입식품</text>
+              </g>
+              <!-- 2026-05 루비즈 ERP (top/latest) MAJOR -->
+              <g class="tree-branch tree-branch--major tree-branch--latest" data-i="7">
+                <path d="M130,110 L130,75" stroke="#e81e1e" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <circle class="tree-node-pulse" cx="130" cy="70" r="14" fill="url(#nodeGlow)"/>
+                <circle cx="130" cy="70" r="7" fill="#e81e1e"/>
+                <circle cx="130" cy="70" r="3" fill="#fff"/>
+                <text x="130" y="52" text-anchor="middle" fill="#fff" font-family="Pretendard, sans-serif" font-size="11" font-weight="800">루비즈 ERP</text>
+                <text x="130" y="40" text-anchor="middle" fill="#e81e1e" font-family="Pretendard, sans-serif" font-size="8" font-weight="600" letter-spacing="0.2em">NOW · 2026-05</text>
+              </g>
+
+              <!-- Subtle drifting particles along the trunk -->
+              <g class="tree-particles">
+                <circle class="tree-particle" cx="130" cy="470" r="1.2" fill="#fff"/>
+                <circle class="tree-particle tree-particle--2" cx="130" cy="470" r="1" fill="#e81e1e"/>
+                <circle class="tree-particle tree-particle--3" cx="130" cy="470" r="0.8" fill="#fff"/>
+              </g>
+            </svg>
+
+            <!-- Progress meter -->
+            <div class="history-tree__meter">
+              <div class="history-tree__meter-label">
+                <span>PROGRESS</span>
+                <span data-tree-count>0 / 8</span>
+              </div>
+              <div class="history-tree__meter-bar">
+                <div class="history-tree__meter-fill" data-tree-fill></div>
+              </div>
+              <div class="history-tree__meter-footer">
+                <span>03 · 2025</span>
+                <span class="history-tree__meter-now">— NOW —</span>
+                <span>05 · 2026</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div></div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section class="section" id="certs">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__meta"><span class="eyebrow">CERTIFICATES</span></div>
+        <div>
+          <h2 class="section-title">공식 인증 &amp; <em>영업신고</em></h2>
+          <p class="section-header__text" style="margin-top: 20px;">
+            정부·지자체 공식 인증을 통해 사업의 정당성과 전문성을 확보했습니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="certs">
+        <div class="cert-card reveal">
+          <div class="cert-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="cert-card__title">여성기업 확인서</h3>
+          <p class="cert-card__meta">발급번호 0127-2025-39795<br>유효기간 2025.05.21 ~ 2028.05.20</p>
+          <p style="font-size: 13px; color: var(--ink-70); line-height: 1.7;">중소벤처기업부장관 인증. 여성이 경영하는 기업으로 공식 지정되었습니다.</p>
+        </div>
+
+        <div class="cert-card reveal" data-delay="1">
+          <div class="cert-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 7l-8-4-8 4v6c0 4 3.5 7.5 8 9 4.5-1.5 8-5 8-9V7z" stroke-linejoin="round"/>
+              <path d="M9 12l2 2 4-4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="cert-card__title">건강기능식품 영업신고증</h3>
+          <p class="cert-card__meta">제2025-0500117호<br>2025.03.14 신고</p>
+          <p style="font-size: 13px; color: var(--ink-70); line-height: 1.7;">구리시 교부. 건강기능식품 일반판매업 영업신고 완료.</p>
+        </div>
+
+        <div class="cert-card reveal" data-delay="2">
+          <div class="cert-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20M3 12h18" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="cert-card__title">수입식품판매업 영업등록증</h3>
+          <p class="cert-card__meta">2026 · 04 등록 예정</p>
+          <p style="font-size: 13px; color: var(--ink-70); line-height: 1.7;">글로벌 브랜드 상품의 공식 수입 유통을 위한 영업 등록.</p>
+        </div>
+
+        <div class="cert-card reveal">
+          <div class="cert-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="M7 10h10M7 14h6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="cert-card__title">통신판매업 신고증</h3>
+          <p class="cert-card__meta">제2025-경기구리-0235호<br>2025.03.18 신고</p>
+          <p style="font-size: 13px; color: var(--ink-70); line-height: 1.7;">전자상거래 기반 사업 운영을 위한 신고 완료.</p>
+        </div>
+
+        <div class="cert-card reveal" data-delay="1">
+          <div class="cert-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              <path d="M8 12l3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="cert-card__title">중소기업 확인서</h3>
+          <p class="cert-card__meta">발급번호 0010-2025-393117<br>소기업(소상공인) 지정</p>
+          <p style="font-size: 13px; color: var(--ink-70); line-height: 1.7;">중소기업기본법 제2조 및 소상공인기본법 제2조에 의한 공식 확인.</p>
+        </div>
+
+        <div class="cert-card reveal" data-delay="2">
+          <div class="cert-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16v16H4z"/>
+              <path d="M4 8h16M8 4v16" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="cert-card__title">사업자등록증</h3>
+          <p class="cert-card__meta">등록번호 446-04-03574<br>일반과세자 · 2025.03.13 발급</p>
+          <p style="font-size: 13px; color: var(--ink-70); line-height: 1.7;">구리세무서장 발급. 도매 및 소매업, 전자상거래 소매 중개업.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <!-- ====================================================== -->
+  <!-- FOOTER — clean / utilitarian                           -->
+  <!-- ====================================================== -->
+  <footer class="footer">
+    <div class="container">
+
+      <!-- Top utility links -->
+      <nav class="footer__top-nav">
+        <a href="about.html" data-i18n="nav.about">회사소개</a>
+        <a href="business.html" data-i18n="nav.business">사업영역</a>
+        <a href="brands.html" data-i18n="nav.brands">브랜드</a>
+        <a href="contact.html" data-i18n="nav.contact">컨택트</a>
+        <a href="#" class="footer__top-nav-alt">개인정보처리방침</a>
+        <a href="#" class="footer__top-nav-alt">이용약관</a>
+        <a href="#" class="footer__top-nav-alt footer__top-nav-alt--em">이메일 무단수집거부</a>
+      </nav>
+
+      <!-- Legal credentials + brand logo (right) -->
+
+      <div class="footer__legal-row">
+
+        <div class="footer__legal">
+        <p class="footer__legal-line">
+          대표이사 : <strong>김서늬</strong>  ·  사업자등록번호 : <strong>446-04-03574</strong>  ·  통신판매업 신고번호 : <strong>제 2025-경기구리-0235 호</strong>  ·  건강기능식품 영업신고 : <strong>제 2025-0500117 호</strong>
+        </p>
+        <p class="footer__legal-line">
+          주소 : 경기도 구리시 갈매순환로204번길 43-5, 1층
+        </p>
+      </div>
+        <div class="footer__legal-logo">
+          <img src="../assets/img/logo-horizontal-darkbg.svg" alt="ROUTE BY" class="footer__legal-logo-img">
+        </div>
+      </div>
+
+      <!-- Content protection notice (inline prose) -->
+      <div class="footer__notice">
+        <p data-i18n="footer.notice">
+          <strong>루트바이</strong>의 사전 승낙 없이 모든 정보를 <strong>복제, 전송, 출판, 배포</strong> 등 무단 이용할 수 없습니다.
+        </p>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer__copyright" data-i18n="footer.copyright">
+        Copyright © 2025 ROUTEBY. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll-to-top button -->
+  <button class="scroll-top" data-scroll-top aria-label="맨 위로" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/fx.js"></script>
+</body>
+</html>
